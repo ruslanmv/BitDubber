@@ -81,10 +81,13 @@ def get_auth_token(api_key):
 def identify_ui_elements_with_llama32(screenshot_path):
     try:
         api_key = os.getenv("WATSONX_APIKEY")
+        url_base = os.getenv("WATSONX_URL")
+        
         access_token = get_auth_token(api_key)
         encoded_image = get_encoded_string(screenshot_path)
 
-        url = "https://eu-de.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29"
+        #url = "https://eu-de.ml.cloud.ibm.com/ml/v1/text/chat?version=2023-05-29"
+        url = f"{url_base}/ml/v1/text/chat?version=2023-05-29"
         body = {
             "messages": [
                 {"role": "system", "content": "Extract UI elements from the image."},
