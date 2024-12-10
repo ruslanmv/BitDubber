@@ -48,10 +48,6 @@ Follow the progress and contribute to the future of **BitDubber**:
 Got ideas or suggestions? We'd love to hear from you!  
 Join our growing community to help shape the next generation of intelligent desktop assistants.
 
-📧 Email us at [support@bitdubber.com](mailto:support@bitdubber.com)
-
----
-
 ---
 
 ### 🚀 BitDubber - Transforming How You Work with Your Desktop!
