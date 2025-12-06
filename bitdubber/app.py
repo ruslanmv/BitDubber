@@ -12,8 +12,7 @@ import base64
 import logging
 import os
 import sys
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import gradio as gr
 import pandas as pd
@@ -22,7 +21,6 @@ import requests
 from dotenv import load_dotenv
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import SpeechToTextV1, TextToSpeechV1
-from PIL import Image
 
 # Load environment variables
 load_dotenv()
@@ -85,7 +83,7 @@ class BitDubberConfig:
         logger.info("Configuration loaded successfully")
 
     @staticmethod
-    def _get_env_variable(key: str, default: Optional[str] = None) -> str:
+    def _get_env_variable(key: str, default: str | None = None) -> str:
         """Retrieve environment variable with validation.
 
         Args:
@@ -266,7 +264,7 @@ class ScreenAutomation:
             raise UIAutomationError(error_msg) from e
 
     @staticmethod
-    def execute_click_sequence(click_sequence: List[Dict[str, Any]]) -> str:
+    def execute_click_sequence(click_sequence: list[dict[str, Any]]) -> str:
         """Execute a sequence of UI automation actions.
 
         Args:
@@ -326,7 +324,7 @@ class LLaMAService:
             config: BitDubberConfig instance with credentials
         """
         self.config = config
-        self.access_token: Optional[str] = None
+        self.access_token: str | None = None
         logger.info("LLaMA service initialized")
 
     def get_auth_token(self) -> str:
@@ -413,7 +411,7 @@ class LLaMAService:
             logger.error(error_msg)
             raise LLaMAServiceError(error_msg) from e
 
-    def determine_click_sequence(self, user_request: str, csv_path: str) -> List[Dict[str, Any]]:
+    def determine_click_sequence(self, user_request: str, csv_path: str) -> list[dict[str, Any]]:
         """Determine action sequence based on user request and UI elements.
 
         Args:

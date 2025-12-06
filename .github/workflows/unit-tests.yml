@@ -1,0 +1,88 @@
+name: Unit Tests Verification
+
+on:
+  push:
+    branches: [ main, dev-*, claude/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: |
+          uv pip install --system -e ".[dev]"
+
+      - name: Run linting checks
+        run: |
+          uv run ruff check bitdubber tests
+          uv run ruff format --check bitdubber tests
+
+      - name: Run type checking
+        run: |
+          uv run mypy bitdubber
+
+      - name: Run unit tests
+        run: |
+          uv run pytest tests/ -v --cov=bitdubber --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.python-version == '3.11'
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  installation-check:
+    name: Verify Installation
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Install BitDubber
+        run: |
+          uv pip install --system -e .
+
+      - name: Verify installation
+        run: |
+          python -c "import bitdubber; print('BitDubber installed successfully!')"
+          python -c "from bitdubber.app import BitDubberConfig; print('BitDubber modules loaded successfully!')"

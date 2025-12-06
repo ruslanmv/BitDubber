@@ -4,16 +4,13 @@ Author: Ruslan Magana
 Website: ruslanmv.com
 """
 
-import os
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
 from bitdubber.app import (
     BitDubberApp,
     BitDubberConfig,
-    LLaMAServiceError,
-    UIAutomationError,
     WatsonServicesError,
 )
 
@@ -172,7 +169,7 @@ class TestBitDubberApp:
     ) -> None:
         """Test Gradio interface creation."""
         app = BitDubberApp()
-        interface = app.create_interface()
+        app.create_interface()
 
         mock_interface.assert_called_once()
         # Verify interface was created with correct parameters

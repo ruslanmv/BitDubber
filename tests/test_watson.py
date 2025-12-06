@@ -4,7 +4,7 @@ Author: Ruslan Magana
 Website: ruslanmv.com
 """
 
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -162,9 +162,7 @@ class TestWatsonServices:
         mock_tts.synthesize.return_value.get_result.return_value = mock_response
 
         watson = WatsonServices(mock_config)
-        watson.convert_text_to_speech(
-            "Hello world", str(output_file), voice="en-GB_KateVoice"
-        )
+        watson.convert_text_to_speech("Hello world", str(output_file), voice="en-GB_KateVoice")
 
         # Verify custom voice was used
         call_kwargs = mock_tts.synthesize.call_args[1]

@@ -15,7 +15,9 @@ class TestScreenAutomation:
     """Test cases for ScreenAutomation class."""
 
     @patch("bitdubber.app.pyautogui.screenshot")
-    def test_take_screenshot_success(self, mock_screenshot: Mock, tmp_path: pytest.TempPathFactory) -> None:
+    def test_take_screenshot_success(
+        self, mock_screenshot: Mock, tmp_path: pytest.TempPathFactory
+    ) -> None:
         """Test successful screenshot capture."""
         output_path = tmp_path / "test_screenshot.png"
 
